@@ -23,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Alignment
@@ -31,6 +32,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +54,75 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TelaInicial() {
 
+    var abaSelecionada by remember {mutableStateOf("Chat")}
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Black
+        containerColor = Color.Black,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {  },
+                containerColor = Color(0xFFE63946),
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Adicionar treino")
+            }
+        },
+
+        bottomBar = {
+            NavigationBar(
+                containerColor = Color.Black,
+                contentColor = Color.White
+            ) {
+
+
+                NavigationBarItem(
+                    selected = abaSelecionada == "Details",
+                    onClick = { abaSelecionada = "Details" },
+                    icon = {
+
+                    },
+                    label = { Text("Details") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        selectedTextColor = Color.White,
+                        unselectedIconColor = Color.Gray,
+                        unselectedTextColor = Color.Gray,
+                        indicatorColor = Color.Transparent
+                    )
+                )
+
+
+                NavigationBarItem(
+                    selected = abaSelecionada == "Rankings",
+                    onClick = { abaSelecionada = "Rankings" },
+                    icon = {
+
+                    },
+                    label = { Text("Rankings") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        selectedTextColor = Color.White,
+                        unselectedIconColor = Color.Gray,
+                        unselectedTextColor = Color.Gray,
+                        indicatorColor = Color.Transparent
+                    )
+                )
+                NavigationBarItem(
+                    selected = abaSelecionada == "Chat",
+                    onClick = { abaSelecionada = "Chat" },
+                    icon = {
+                    },
+                    label = { Text("Chat") },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        selectedTextColor = Color.White,
+                        unselectedIconColor = Color.Gray,
+                        unselectedTextColor = Color.Gray,
+                        indicatorColor = Color.Transparent
+                    )
+                )
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
