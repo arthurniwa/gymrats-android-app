@@ -32,8 +32,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.material.icons.filled.Person
 
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +44,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TelaInicial() {
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Black
@@ -61,21 +60,42 @@ fun TelaInicial() {
                 titulo = "Treino teste",
                 autor = "Arthur Niwa",
                 hora = "11:30",
-                imagePerfil = R.drawable.profile_image
+                imagePerfil = R.drawable.profile_image2
             )
             Spacer(modifier = Modifier.height(8.dp))
             CartaoAtividade(
                 titulo = "Treino de peito",
                 autor = "Eduardo Rech",
                 hora = "18:49",
-                imagePerfil = R.drawable.profile_image
+                imagePerfil = R.drawable.profile_image3
             )
             Spacer(modifier = Modifier.height(8.dp))
             CartaoAtividade(
                 titulo = "Treino de Costas",
                 autor = "Arthur Niwa",
                 hora = "07:12",
-                imagePerfil = R.drawable.profile_image
+                imagePerfil = R.drawable.profile_image2
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            CartaoAtividade(
+                titulo = "Treino de Ombros",
+                autor = "Eduardo Rech",
+                hora = "23:59",
+                imagePerfil = R.drawable.profile_image3
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            CartaoAtividade(
+                titulo = "Corrida Matinal",
+                autor = "Arthur Niwa",
+                hora = "05:40",
+                imagePerfil = R.drawable.profile_image2
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            CartaoAtividade(
+                titulo = "Treino de Braço",
+                autor = "Eduardo Rech",
+                hora = "11:30",
+                imagePerfil = R.drawable.profile_image3
             )
         }
     }
@@ -94,7 +114,6 @@ fun CartaoAtividade(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        // MUDANÇA: Nova cor do card, mais escura
         colors = CardDefaults.cardColors(containerColor = Color(0xFF2E2E2E))
     ) {
 
@@ -192,20 +211,19 @@ fun CabecalhoDoGrupo(){
         )
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(12.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
             ){
             InfoParticipante(
-                imagem = R.drawable.profile_image,
+                imagem = R.drawable.profile_image2,
                 numero = "6",
                 cargo = "Lider",
 
             )
             InfoParticipante(
-                imagem = R.drawable.profile_image,
+                imagem = R.drawable.profile_image3,
                 numero = "6",
                 cargo = "Lider"
             )
@@ -221,7 +239,7 @@ fun InfoParticipante(imagem: Int, numero: String, cargo: String){
             painter = painterResource( id = imagem),
             contentDescription = "Avatar do Participante",
             modifier = Modifier
-                .size(32.dp)
+                .size(40.dp)
                 .clip(CircleShape)
                 .border(BorderStroke(2.dp, Color.Black), CircleShape)
         )
