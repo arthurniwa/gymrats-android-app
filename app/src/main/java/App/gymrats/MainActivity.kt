@@ -37,142 +37,147 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TelaInicial()
+            AppPrincipal()
         }
     }
 }
 
-@Composable
-fun TelaInicial() {
+// A tela de Ranking de exemplo foi REMOVIDA daqui, pois agora existe no outro arquivo.
 
-    var abaSelecionada by remember {mutableStateOf("Chat")}
+@Composable
+fun AppPrincipal() {
+    val navController = rememberNavController()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Black,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = { /* TODO: Ação do botão de adicionar */ },
                 containerColor = Color(0xFFE63946),
                 contentColor = Color.White
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Adicionar treino")
             }
         },
-
         bottomBar = {
             NavigationBar(
                 containerColor = Color.Black,
                 contentColor = Color.White
             ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
 
+                val items = listOf("Details", "Rankings", "Chat")
 
-                NavigationBarItem(
-                    selected = abaSelecionada == "Details",
-                    onClick = { abaSelecionada = "Details" },
-                    icon = {
-
-                    },
-                    label = { Text("Details") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        selectedTextColor = Color.White,
-                        unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
-                        indicatorColor = Color.Transparent
+                items.forEach { screen ->
+                    NavigationBarItem(
+                        selected = currentDestination?.hierarchy?.any { it.route == screen } == true,
+                        onClick = {
+                            navController.navigate(screen) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                        icon = { /* Ícones podem ser adicionados aqui se desejar */ },
+                        label = { Text(screen) },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.White,
+                            selectedTextColor = Color.White,
+                            unselectedIconColor = Color.Gray,
+                            unselectedTextColor = Color.Gray,
+                            indicatorColor = Color.Transparent
+                        )
                     )
-                )
-
-
-                NavigationBarItem(
-                    selected = abaSelecionada == "Rankings",
-                    onClick = { abaSelecionada = "Rankings" },
-                    icon = {
-
-                    },
-                    label = { Text("Rankings") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        selectedTextColor = Color.White,
-                        unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
-                        indicatorColor = Color.Transparent
-                    )
-                )
-                NavigationBarItem(
-                    selected = abaSelecionada == "Chat",
-                    onClick = { abaSelecionada = "Chat" },
-                    icon = {
-                    },
-                    label = { Text("Chat") },
-                    colors = NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
-                        selectedTextColor = Color.White,
-                        unselectedIconColor = Color.Gray,
-                        unselectedTextColor = Color.Gray,
-                        indicatorColor = Color.Transparent
-                    )
-                )
+                }
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-        ){
-            CabecalhoDoGrupo()
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Treino teste",
-                autor = "Arthur Niwa",
-                hora = "11:30",
-                imagePerfil = R.drawable.profile_image2
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Treino de peito",
-                autor = "Eduardo Rech",
-                hora = "18:49",
-                imagePerfil = R.drawable.profile_image3
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Treino de Costas",
-                autor = "Arthur Niwa",
-                hora = "07:12",
-                imagePerfil = R.drawable.profile_image2
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Treino de Ombros",
-                autor = "Eduardo Rech",
-                hora = "23:59",
-                imagePerfil = R.drawable.profile_image3
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Corrida Matinal",
-                autor = "Arthur Niwa",
-                hora = "05:40",
-                imagePerfil = R.drawable.profile_image2
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            CartaoAtividade(
-                titulo = "Treino de Braço",
-                autor = "Eduardo Rech",
-                hora = "11:30",
-                imagePerfil = R.drawable.profile_image3
-            )
+        NavHost(
+            navController = navController,
+            startDestination = "Chat",
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            composable("Chat") { TelaInicialConteudo() }
+
+            // ✨ ÚNICA MUDANÇA AQUI: Agora chama a função TelaDeRanking() do outro arquivo ✨
+            composable("Rankings") { TelaDeRanking() }
+
+            composable("Details") {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    Text("Tela de Detalhes", color = Color.White)
+                }
+            }
         }
+    }
+}
+
+// O restante do arquivo continua igual...
+@Composable
+fun TelaInicialConteudo() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        CabecalhoDoGrupo()
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Treino teste",
+            autor = "Arthur Niwa",
+            hora = "11:30",
+            imagePerfil = R.drawable.profile_image2
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Treino de peito",
+            autor = "Eduardo Rech",
+            hora = "18:49",
+            imagePerfil = R.drawable.profile_image3
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Treino de Costas",
+            autor = "Arthur Niwa",
+            hora = "07:12",
+            imagePerfil = R.drawable.profile_image2
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Treino de Ombros",
+            autor = "Eduardo Rech",
+            hora = "23:59",
+            imagePerfil = R.drawable.profile_image3
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Corrida Matinal",
+            autor = "Arthur Niwa",
+            hora = "05:40",
+            imagePerfil = R.drawable.profile_image2
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        CartaoAtividade(
+            titulo = "Treino de Braço",
+            autor = "Eduardo Rech",
+            hora = "11:30",
+            imagePerfil = R.drawable.profile_image3
+        )
     }
 }
 
@@ -183,7 +188,6 @@ fun CartaoAtividade(
     autor: String,
     hora: String,
     imagePerfil: Int,
-    iconeReacao: Int? = null
 ) {
     Card(
         modifier = Modifier
@@ -246,62 +250,51 @@ fun CartaoAtividade(
                 )
             }
 
-
-            if (iconeReacao != null) {
-                Image(
-                    painter = painterResource(id = iconeReacao),
-                    contentDescription = "Reação",
-                    modifier = Modifier
-                        .size(20.dp)
-                        .align(Alignment.BottomEnd),
-                    colorFilter = ColorFilter.tint(Color.Yellow)
-                )
-                }
-            }
         }
     }
+}
 @Composable
 fun CabecalhoDoGrupo(){
     Column(modifier = Modifier.padding(horizontal = 16.dp)){
-    Text(
-        text = "Grupo de Treino",
-        style = MaterialTheme.typography.headlineLarge,
-        fontWeight = FontWeight.Bold,
-        color = Color.White,
-        modifier = Modifier.padding(vertical = 16.dp)
-    )
+        Text(
+            text = "Tropa dos Macacos",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
         Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
         )
         {
-        Image(
-            painter = painterResource(id = R.drawable.pizza),
-            contentDescription = "Banner do Grupo",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(16.dp))
-        )
-        Row(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            Image(
+                painter = painterResource(id = R.drawable.pizza),
+                contentDescription = "Plano de fundo",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(16.dp))
+            )
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ){
-            InfoParticipante(
-                imagem = R.drawable.profile_image2,
-                numero = "6",
-                cargo = "Lider",
+                InfoParticipante(
+                    imagem = R.drawable.profile_image2,
+                    numero = "8",
+                    cargo = "Lider",
 
-            )
-            InfoParticipante(
-                imagem = R.drawable.profile_image3,
-                numero = "6",
-                cargo = "Lider"
-            )
+                    )
+                InfoParticipante(
+                    imagem = R.drawable.profile_image3,
+                    numero = "6",
+                    cargo = "Segundo"
+                )
             }
         }
     }
@@ -312,7 +305,7 @@ fun InfoParticipante(imagem: Int, numero: String, cargo: String){
     Row (verticalAlignment = Alignment.CenterVertically){
         Image(
             painter = painterResource( id = imagem),
-            contentDescription = "Avatar do Participante",
+            contentDescription = "foto do Participante",
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
@@ -335,10 +328,8 @@ fun InfoParticipante(imagem: Int, numero: String, cargo: String){
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewTelaCompleta(){
-    TelaInicial()
+    AppPrincipal()
 }
