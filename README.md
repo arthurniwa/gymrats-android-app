@@ -1,36 +1,46 @@
-*Gym Rats*
-Esse é um projeto de um aplicativo Android que estou criando para o meu grupo de treino.
+# Projeto Gym Rats
 
-A ideia é simples: ter um lugar onde a gente possa postar os treinos do dia e ver um ranking de quem está sendo mais ativo. É uma forma de motivar todo mundo a não faltar na academia!
+> Este é um projeto de um aplicativo Android que estamos replicando. A ideia é: ter um lugar onde a gente possa postar os treinos do dia a dia e ver um ranking de quem está sendo mais ativo. Também apresenta outras funcionalidades.
 
-*Tela Principal*
-O que ele faz?
-Mostra uma lista com os treinos que a galera do grupo postou.
+## O que ele faz?
 
-Tem uma tela de Ranking para ver quem treinou mais na semana.
+O app foi pensado para ser simples e direto. As funcionalidades principais são:
 
-Permite adicionar novos treinos.
+-   Mostrar uma lista com os treinos que a galera do grupo postou.
+    
+-   Ter uma tela de **Ranking** para ver quem treinou mais na semana.
+    
+-   Permitir adicionar novos treinos.
+    
+-   Interface intuitiva e simples e em **modo escuro**.
+    
+## Tecnologias que usamos
 
-Tudo com uma interface simples e em modo escuro.
+Para criar o aplicativo, utilizamos algumas das ferramentas para desenvolvimento Android:
 
-*Tecnologias que usei*
-Linguagem: Kotlin
+-   **Linguagem:** Kotlin
+    
+-   **Telas:** Jetpack Compose
+    
+-   **Navegação entre telas:** Navigation Compose
+    
+-   **IDE:** Android Studio
+    
 
-Telas: Jetpack Compose
+## Como rodar o projeto
 
-Navegação entre telas: Navigation Compose
+Você vai precisar do **Android Studio** instalado. Com ele pronto, siga os passos:
 
-IDE: Android Studio
+1.  Clone este repositório para a sua máquina:
+    
+2.  Abra a pasta do projeto no Android Studio.
+    
+3.  Espere o Gradle sincronizar e baixar todas as dependências.
+    
+4.  Clique no botão de Play para rodar no emulador ou no seu celular.
+    
 
-*Como rodar o projeto*
-Você precisa ter o Android Studio instalado.
+----------
 
-Clone este repositório: https://github.com/arthurniwa/gymrats-android-app
+Feito por **Eduardo e Arthur**.
 
-Abra a pasta do projeto no Android Studio.
-
-Espere o Gradle sincronizar tudo.
-
-Clique no botão de Play para rodar.
-
-Feito por Eduardo e Arthur.
